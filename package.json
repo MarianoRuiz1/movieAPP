@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
+    "@react-native-community/checkbox": "^0.5.14",
     "@rneui/themed": "^4.0.0-rc.7",
     "expo": "~47.0.9",
     "expo-checkbox": "~2.2.2",
