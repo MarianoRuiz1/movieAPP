@@ -1,72 +1,74 @@
-import { Button, FlatList, StyleSheet, Text, View } from "react-native"
-import React, { useMemo, useState } from "react"
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 
-import AddItem from "./src/components/AddItem"
-import { Checkbox } from 'react-native-paper';
-import Modal from "./src/components/Modal"
+import AddItem from "./src/components/AddItem";
+import { Checkbox } from "react-native-paper";
+import Modal from "./src/components/Modal";
 
 export default function App() {
-  const [textItem, setTextItem] = useState("")
-  const [list, setList] = useState([])
-  const [itemSelected, setItemSelected] = useState("")
-  const [modalVisble, setModalVisible] = useState(false)
+  const [textItem, setTextItem] = useState("");
+  const [list, setList] = useState([]);
+  const [itemSelected, setItemSelected] = useState("");
+  const [modalVisble, setModalVisible] = useState(false);
   const MyCheckbox = () => {
     const [checked, setChecked] = useState(false);
-    const handleCheckboxClick = useMemo(() => {
-      console.log("function generated in MyCheckbox");
-      return (e) => {
-        setChecked(e.target.checked);
-      };
-    }, []);
-  
+
+    const handleCheckboxClick = () => {
+      setChecked(!checked);
+    };
+
     return (
       <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      color="#FFFFFF"
-      onPress={() => {
-        checked={checked}
-        name="mycheckbox"
-        onChange={handleCheckboxClick}
-        type="checkbox"
-        id="mycheckbox"
-      }}
-    />
+        status={checked ? "checked" : "unchecked"}
+        color="#FFFFFF"
+        onPress={handleCheckboxClick}
+      />
     );
   };
 
-  const onHandleChangeItem = text => {
-    setTextItem(text)
-  }
+  const onHandleChangeItem = (text) => {
+    setTextItem(text);
+  };
 
   const addItem = () => {
-    setList(prevState => [...prevState, textItem])
-    setTextItem("")
-  }
+    setList((prevState) => [...prevState, textItem]);
+    setTextItem("");
+  };
 
-  const handleModal = item => {
-    setItemSelected(item)
-    setModalVisible(true)
-  }
+  const handleModal = (item) => {
+    setItemSelected(item);
+    setModalVisible(true);
+  };
 
-  const onHandleDelete = item => {
-    console.log(item)
-    setList(prevState => prevState.filter(element => element !== item))
-    setModalVisible(!modalVisble)
-  }
+  const onHandleDelete = (item) => {
+    console.log(item);
+    setList((prevState) => prevState.filter((element) => element !== item));
+    setModalVisible(!modalVisble);
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.renderItemStyle}>
       <Text style={styles.itemStyle}>{item}</Text>
-      <MyCheckbox />
-    <Button title="Edit" color="#00665C" textAlign= 'right' onPress={() => handleModal(item)}/>
+
+      <MyCheckbox item={item} />
+
+      <Button
+        title="Edit"
+        color="#00665C"
+        textAlign="right"
+        onPress={() => handleModal(item)}
+      />
     </View>
-  )
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Watchlist</Text>
-        <Text style={styles.subtitle}>Add the name of a movie you want to see</Text>
+        <Text style={styles.subtitle}>
+          Add the name of a movie you want to see and mark it one time you saw
+          it
+        </Text>
         <AddItem
           onChange={onHandleChangeItem}
           textValue={textItem}
@@ -77,7 +79,7 @@ export default function App() {
         <FlatList
           data={list}
           renderItem={renderItem}
-          keyExtractor={item => item}
+          keyExtractor={(item) => item}
         />
       </View>
       <Modal
@@ -87,7 +89,7 @@ export default function App() {
         onDismissModal={setModalVisible}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -137,4 +139,4 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#FFFFFF",
   },
-})
+});
