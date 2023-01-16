@@ -1,5 +1,5 @@
 import { Button, FlatList, StyleSheet, Text, View } from "react-native"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 
 import AddItem from "./src/components/AddItem"
 import { Checkbox } from 'react-native-paper';
@@ -10,8 +10,29 @@ export default function App() {
   const [list, setList] = useState([])
   const [itemSelected, setItemSelected] = useState("")
   const [modalVisble, setModalVisible] = useState(false)
-  const [checked, setChecked] = useState(false);
-
+  const MyCheckbox = () => {
+    const [checked, setChecked] = useState(false);
+    const handleCheckboxClick = useMemo(() => {
+      console.log("function generated in MyCheckbox");
+      return (e) => {
+        setChecked(e.target.checked);
+      };
+    }, []);
+  
+    return (
+      <Checkbox
+      status={checked ? 'checked' : 'unchecked'}
+      color="#FFFFFF"
+      onPress={() => {
+        checked={checked}
+        name="mycheckbox"
+        onChange={handleCheckboxClick}
+        type="checkbox"
+        id="mycheckbox"
+      }}
+    />
+    );
+  };
 
   const onHandleChangeItem = text => {
     setTextItem(text)
@@ -36,13 +57,7 @@ export default function App() {
   const renderItem = ({ item }) => (
     <View style={styles.renderItemStyle}>
       <Text style={styles.itemStyle}>{item}</Text>
-      <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      color="#FFFFFF"
-      onPress={() => {
-        setChecked(!checked);
-      }}
-    />
+      <MyCheckbox />
     <Button title="Edit" color="#00665C" textAlign= 'right' onPress={() => handleModal(item)}/>
     </View>
   )
